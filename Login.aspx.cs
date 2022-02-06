@@ -174,7 +174,7 @@ namespace SITconnect
             bool result = true;
             string captchaResponse = Request.Form["g-recaptcha-response"];
 
-            HttpWebRequest req = (HttpWebRequest)WebRequest.Create("https://www.google.com/recaptcha/api/siteverify?secret=6LcEVl4eAAAAAMtMx0VAayxRohZIJDoLN3vFvfYK &response=" + captchaResponse);
+            HttpWebRequest req = (HttpWebRequest)WebRequest.Create("https://www.google.com/recaptcha/api/siteverify?secret=KEEEEYY &response=" + captchaResponse);
 
             try
             {
