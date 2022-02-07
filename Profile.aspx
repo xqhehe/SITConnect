@@ -13,6 +13,13 @@
         .auto-style2 {
             width: 129px;
         }
+        .auto-style3 {
+            width: 129px;
+            height: 23px;
+        }
+        .auto-style4 {
+            height: 23px;
+        }
     </style>
 </head>
 <body>
@@ -30,9 +37,39 @@
                     <td>&nbsp;</td>
                 </tr>
                 <tr>
-                    <td class="auto-style2">User ID:</td>
+                    <td class="auto-style2">First Name:</td>
                     <td>
-                        <asp:Label ID="useridLBL" runat="server" Text="null"></asp:Label>
+                        <asp:Label ID="fnameLBL" runat="server" Text="null"></asp:Label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="auto-style2">&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="auto-style2">Last Name:</td>
+                    <td>
+                        <asp:Label ID="lnameLBL" runat="server" Text="null"></asp:Label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="auto-style2">&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="auto-style2">Email:</td>
+                    <td>
+                        <asp:Label ID="emailLBL" runat="server" Text="null"></asp:Label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="auto-style3"></td>
+                    <td class="auto-style4"></td>
+                </tr>
+                <tr>
+                    <td class="auto-style2">Date of Birth:</td>
+                    <td>
+                        <asp:Label ID="dobLBL" runat="server" Text="null"></asp:Label>
                     </td>
                 </tr>
                 <tr>
@@ -44,10 +81,6 @@
                     <td>
                         <asp:Label ID="ccLBL" runat="server" Text="null"></asp:Label>
                     </td>
-                </tr>
-                <tr>
-                    <td class="auto-style2">&nbsp;</td>
-                    <td>&nbsp;</td>
                 </tr>
             </table>
         </div>

@@ -53,7 +53,6 @@ namespace SITconnect
                     {
                         Session["UserID"] = userid;
                         
-                        //Response.Write("<script>window.alert('this part processed bro!!!!')</script>"); 
                         LoginMe(sender, e);
                     }
                     else
@@ -174,7 +173,7 @@ namespace SITconnect
             bool result = true;
             string captchaResponse = Request.Form["g-recaptcha-response"];
 
-            HttpWebRequest req = (HttpWebRequest)WebRequest.Create("https://www.google.com/recaptcha/api/siteverify?secret=KEEEEYY &response=" + captchaResponse);
+            HttpWebRequest req = (HttpWebRequest)WebRequest.Create("https://www.google.com/recaptcha/api/siteverify?secret=6LcEVl4eAAAAAMtMx0VAayxRohZIJDoLN3vFvfYK &response=" + captchaResponse);
 
             try
             {
@@ -196,6 +195,32 @@ namespace SITconnect
             {
                 throw ex;
             }
+        }
+
+        protected string decryptData(byte[] cipherText)
+        {
+
+            string plainText = null;
+            //byte[] cipherText = Convert.FromBase64String(cipherString);
+
+            try
+            {
+                RijndaelManaged cipher = new RijndaelManaged();
+                ICryptoTransform decryptTransform = cipher.CreateDecryptor();
+
+                //Decrypt
+                //byte[] decryptedText = decryptTransform.TransformFinalBlock(cipherText, 0, cipherText.Length);
+                //decryptedString = Encoding.UTF8.GetString(decryptedText);
+
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+
+            finally { }
+            return plainText;
         }
     }
 }

@@ -98,5 +98,10 @@ namespace SITconnect
         {
             LogoutMe(sender, e);
         }
+
+        protected void viewProfileBTN_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Profile.aspx");
+        }
     }
 }

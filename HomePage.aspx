@@ -34,7 +34,7 @@
                         <h1 style="margin-left:20px;">SITConnect Stationary e-Shop</h1>
                     </td>
                     <td>
-                        <asp:Button ID="viewProfileBTN" class="submitstyle" runat="server" Text="View Profile" Width="308px" Height="54px" />
+                        <asp:Button ID="viewProfileBTN" class="submitstyle" runat="server" Text="View Profile" Width="308px" Height="54px" OnClick="viewProfileBTN_Click" />
                     </td>
                 </tr>
                 <tr>

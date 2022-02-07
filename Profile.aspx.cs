@@ -27,6 +27,42 @@ namespace SITconnect
             }
         }
 
+        //protected string decryptData(byte[] cipherText)
+        //{
+        //    string plainText = null;
+
+        //    try
+        //    {
+        //        RijndaelManaged cipher = new RijndaelManaged();
+        //        cipher.IV = IV;
+        //        cipher.Key = Key;
+
+        //        // Create a decryptor to perform the stress transform
+        //        ICryptoTransform decryptTransform = cipher.CreateDecryptor();
+
+        //        // Create the streams used for decryption
+        //        using (MemoryStream msDecrypt = new MemoryStream(cipherText))
+        //        {
+        //            using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptTransform, CryptoStreamMode.Read))
+        //            {
+        //                using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+        //                {
+        //                    plainText = srDecrypt.ReadToEnd();
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception(ex.ToString());
+        //    }
+        //    finally
+        //    {
+
+        //    }
+        //    return plainText;
+        //}
+
         protected void displayProfile(string userid)
         {
             SqlConnection connection = new SqlConnection(MYDBConnectionString);
@@ -41,9 +77,24 @@ namespace SITconnect
                 {
                     while (reader.Read())
                     {
+                        if (reader["FirstName"] != DBNull.Value)
+                        {
+                            fnameLBL.Text = reader["FirstName"].ToString();
+                        }
+
+                        if (reader["Lastname"] != DBNull.Value)
+                        {
+                            lnameLBL.Text = reader["Lastname"].ToString();
+                        }
+
                         if (reader["Email"] != DBNull.Value)
                         {
-                            useridLBL.Text = reader["Email"].ToString();
+                            emailLBL.Text = reader["Email"].ToString();
+                        }
+
+                        if (reader["DOB"] != DBNull.Value)
+                        {
+                            dobLBL.Text = reader["DOB"].ToString();
                         }
 
                         if (reader["CreditCard"] != DBNull.Value)
@@ -75,38 +126,31 @@ namespace SITconnect
             }
         }
 
+
+
         protected string decryptData(byte[] cipherText)
         {
+
             string plainText = null;
+            //byte[] cipherText = Convert.FromBase64String(cipherString);
 
             try
             {
                 RijndaelManaged cipher = new RijndaelManaged();
-                cipher.IV = IV;
-                cipher.Key = Key;
-
-                // Create a decryptor to perform the stress transform
                 ICryptoTransform decryptTransform = cipher.CreateDecryptor();
 
-                // Create the streams used for decryption
-                using (MemoryStream msDecrypt = new MemoryStream(cipherText))
-                {
-                    using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptTransform, CryptoStreamMode.Read))
-                    {
-                        using (StreamReader srDecrypt = new StreamReader(csDecrypt))
-                        {
-                            plainText = srDecrypt.ReadToEnd();
-                        }
-                    }
-                }
+                //Decrypt
+                //byte[] decryptedtext = decrypttransform.transformfinalblock(ciphertext, 0, ciphertext.length);
+                //decryptedstring = encoding.utf8.getstring(decryptedtext);
+
+
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.ToString());
             }
-            finally {
-            
-            }
+
+            finally { }
             return plainText;
         }
     }
