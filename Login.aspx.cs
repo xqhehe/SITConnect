@@ -196,31 +196,5 @@ namespace SITconnect
                 throw ex;
             }
         }
-
-        protected string decryptData(byte[] cipherText)
-        {
-
-            string plainText = null;
-            //byte[] cipherText = Convert.FromBase64String(cipherString);
-
-            try
-            {
-                RijndaelManaged cipher = new RijndaelManaged();
-                ICryptoTransform decryptTransform = cipher.CreateDecryptor();
-
-                //Decrypt
-                //byte[] decryptedText = decryptTransform.TransformFinalBlock(cipherText, 0, cipherText.Length);
-                //decryptedString = Encoding.UTF8.GetString(decryptedText);
-
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.ToString());
-            }
-
-            finally { }
-            return plainText;
-        }
     }
 }

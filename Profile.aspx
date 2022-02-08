@@ -11,10 +11,10 @@
             background-color: #E6E6FF;
         }
         .auto-style2 {
-            width: 129px;
+            width: 103px;
         }
         .auto-style3 {
-            width: 129px;
+            width: 103px;
             height: 23px;
         }
         .auto-style4 {
@@ -25,13 +25,8 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            <table class="auto-style1">
-                <tr>
-                    <td class="auto-style2">
                         <h1 style="margin-left:20px;">My Profile</h1>
-                    </td>
-                    <td>&nbsp;</td>
-                </tr>
+            <table class="auto-style1">
                 <tr>
                     <td class="auto-style2">&nbsp;</td>
                     <td>&nbsp;</td>
@@ -81,6 +76,11 @@
                     <td>
                         <asp:Label ID="ccLBL" runat="server" Text="null"></asp:Label>
                     </td>
+                </tr>
+                <tr>
+                    <td class="auto-style2">&nbsp;</td>
+                    <td>
+                        &nbsp;</td>
                 </tr>
             </table>
         </div>

@@ -41,39 +41,6 @@ namespace SITconnect
             }
         }
 
-        protected string decryptData(byte[] cipherText)
-        {
-            string plainText = null;
-
-            try
-            {
-                RijndaelManaged cipher = new RijndaelManaged();
-                cipher.IV = IV;
-                cipher.Key = Key;
-                // Create a decrytor to perform the stream transform.
-                ICryptoTransform decryptTransform = cipher.CreateDecryptor();
-                using (MemoryStream msDecrypt = new MemoryStream(cipherText))
-                {
-                    using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptTransform, CryptoStreamMode.Read))
-                    {
-                        using (StreamReader srDecrypt = new StreamReader(csDecrypt))
-                        {
-                            plainText = srDecrypt.ReadToEnd();
-
-                        }
-                    }
-                }
-            }
-
-
-            catch (Exception ex)
-            {
-                throw new Exception(ex.ToString());
-            }
-            finally { }
-            return plainText;
-        }
-
         protected void LogoutMe(object sender, EventArgs e)
         {
             Session.Clear();
@@ -101,7 +68,7 @@ namespace SITconnect
 
         protected void viewProfileBTN_Click(object sender, EventArgs e)
         {
-            Response.Redirect("Profile.aspx");
+            Response.Redirect("/Profile.aspx");
         }
     }
 }

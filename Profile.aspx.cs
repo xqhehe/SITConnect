@@ -109,10 +109,9 @@ namespace SITconnect
 
                         if (reader["Key"] != DBNull.Value)
                         {
-                            Key = Convert.FromBase64String(reader["IV"].ToString());
+                            Key = Convert.FromBase64String(reader["Key"].ToString());
                         }
                     }
-
                     ccLBL.Text = decryptData(cc);
                 }
             }
@@ -130,26 +129,33 @@ namespace SITconnect
 
         protected string decryptData(byte[] cipherText)
         {
-
             string plainText = null;
-            //byte[] cipherText = Convert.FromBase64String(cipherString);
 
             try
             {
                 RijndaelManaged cipher = new RijndaelManaged();
+                cipher.IV = IV;
+                cipher.Key = Key;
+                // Create a decrytor to perform the stream transform.
                 ICryptoTransform decryptTransform = cipher.CreateDecryptor();
+                using (MemoryStream msDecrypt = new MemoryStream(cipherText))
+                {
+                    using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptTransform, CryptoStreamMode.Read))
+                    {
+                        using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+                        {
+                            plainText = srDecrypt.ReadToEnd();
 
-                //Decrypt
-                //byte[] decryptedtext = decrypttransform.transformfinalblock(ciphertext, 0, ciphertext.length);
-                //decryptedstring = encoding.utf8.getstring(decryptedtext);
-
-
+                        }
+                    }
+                }
             }
+
+
             catch (Exception ex)
             {
                 throw new Exception(ex.ToString());
             }
-
             finally { }
             return plainText;
         }

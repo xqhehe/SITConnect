@@ -89,8 +89,30 @@
     <Content Include="App_Data\MYDB_log.ldf">
       <DependentUpon>MYDB.mdf</DependentUpon>
     </Content>
+    <Content Include="CustomError\Error400.html" />
+    <Content Include="CustomError\Error401.html" />
+    <Content Include="CustomError\Error402.html" />
+    <Content Include="CustomError\Error505.html" />
+    <Content Include="CustomError\Error504.html" />
+    <Content Include="CustomError\Error503.html" />
+    <Content Include="CustomError\Error502.html" />
+    <Content Include="CustomError\Error501.html" />
+    <Content Include="CustomError\Error500.html" />
+    <Content Include="CustomError\Error417.html" />
+    <Content Include="CustomError\Error416.html" />
+    <Content Include="CustomError\Error415.html" />
+    <Content Include="CustomError\Error414.html" />
+    <Content Include="CustomError\Error413.html" />
+    <Content Include="CustomError\Error412.html" />
+    <Content Include="CustomError\Error411.html" />
+    <Content Include="CustomError\Error410.html" />
+    <Content Include="CustomError\Error409.html" />
+    <Content Include="CustomError\Error408.html" />
+    <Content Include="CustomError\Error407.html" />
+    <Content Include="CustomError\Error406.html" />
+    <Content Include="CustomError\Error405.html" />
     <Content Include="CustomError\Error403.html" />
-    <Content Include="CustomError\Error404.css" />
+    <Content Include="CustomError\ErrorStyle.css" />
     <Content Include="CustomError\Error404.html" />
     <Content Include="CustomError\GenericError.html" />
     <Content Include="Global.asax" />
