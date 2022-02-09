@@ -53,8 +53,6 @@
                 </tr>
             </table>
         </div>
-        <p>
-            &nbsp;</p>
     </form>
 </body>
 </html>

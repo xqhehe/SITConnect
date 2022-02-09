@@ -99,7 +99,7 @@ namespace SITconnect
         protected void registerBTN_Click(object sender, EventArgs e)
         {
             //string pwd = get value from your Textbox
-            string pwd = pwTB.Text.ToString().Trim(); ;
+            string pwd = pwTB.Text.ToString().Trim();
             //Generate random "salt"
             RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
             byte[] saltByte = new byte[8];
@@ -115,12 +115,6 @@ namespace SITconnect
             cipher.GenerateKey();
             Key = cipher.Key;
             IV = cipher.IV;
-
-            // EMAIL VERIFICATION
-
-            //Random random = new Random();
-            //verificationcode = random.Next(1001, 9999).ToString();
-
             createAccount();
             Response.Redirect("Login.aspx", false);
         }
@@ -151,7 +145,6 @@ namespace SITconnect
                             cmd.Parameters.AddWithValue("@Locked", 0);
                             cmd.Parameters.AddWithValue("@DateTimeLocked", DBNull.Value);
                             cmd.Connection = con;
-
                             try
                             {
                                 con.Open();
@@ -199,7 +192,9 @@ namespace SITconnect
                 throw new Exception(ex.ToString());
             }
 
-            finally { }
+            finally {
+            
+            }
             return cipherText;
         }
 

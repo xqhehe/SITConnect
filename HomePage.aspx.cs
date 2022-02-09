@@ -43,9 +43,45 @@ namespace SITconnect
 
         protected void LogoutMe(object sender, EventArgs e)
         {
-            Session.Clear();
-            Session.Abandon();
-            Session.RemoveAll();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(MYDBConnectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("INSERT INTO Log VALUES(@UserId, @LogStatus, @DateTimeLogged)"))
+                    {
+                        using (SqlDataAdapter sda = new SqlDataAdapter())
+                        {
+                            userid = Session["UserID"].ToString();
+                            cmd.CommandType = CommandType.Text;
+                            cmd.Parameters.AddWithValue("@UserId", userid);
+                            cmd.Parameters.AddWithValue("@LogStatus", "Log out");
+                            cmd.Parameters.AddWithValue("@DateTimeLogged", DateTime.Now.ToString());
+                            cmd.Connection = con;
+                            try
+                            {
+                                con.Open();
+                                cmd.ExecuteNonQuery();
+                            }
+                            catch (Exception ex)
+                            {
+                                throw new Exception(ex.ToString());
+                            }
+                            finally
+                            {
+                                Session.Clear();
+                                Session.Abandon();
+                                Session.RemoveAll();
+                                con.Close();
+                            }
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
 
             Response.Redirect("Login.aspx", false);
 
@@ -54,6 +90,7 @@ namespace SITconnect
                 Response.Cookies["ASP.NET_SessionId"].Value = string.Empty;
                 Response.Cookies["ASP.NET_SessionId"].Expires = DateTime.Now.AddMonths(-20);
             }
+
             if (Request.Cookies["AuthToken"] != null)
             {
                 Response.Cookies["AuthToken"].Value = string.Empty;
@@ -68,7 +105,7 @@ namespace SITconnect
 
         protected void viewProfileBTN_Click(object sender, EventArgs e)
         {
-            Response.Redirect("/Profile.aspx");
+            Response.Redirect("Profile.aspx");
         }
     }
 }

@@ -42,7 +42,6 @@
             border-color: pink;
             margin-top:25px;
         }
-
     </style>
     <script>
         grecaptcha.ready(function () {
@@ -80,12 +79,10 @@
                 <td class="auto-style5">
                     <asp:Button ID="loginBTN" class="submitstyle" runat="server" Text="Login" Width="187px" OnClick="loginBTN_Click" />
                 </td>
-                <td>
-                    &nbsp;</td>
+                <td>&nbsp;</td>
             </tr>
             <tr>
-                <td>
-                    &nbsp;</td>
+                <td>&nbsp;</td>
                 <td class="auto-style5">
                     <asp:Button ID="registerPage" class="submitstyle" runat="server" Text="Go to Register Page" Width="187px" OnClick="registerPage_Click"/>
                 </td>
@@ -97,10 +94,10 @@
                 <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response"/>
             </div>
             <td>
-                    <asp:Label ID="Label1" runat="server"></asp:Label>
+                <asp:Label ID="Label1" runat="server"></asp:Label>
             </td>
             <td>
-                    <asp:Label ID="Label2" runat="server"></asp:Label>
+                <asp:Label ID="Label2" runat="server"></asp:Label>
             </td>
         </table>
     </form>

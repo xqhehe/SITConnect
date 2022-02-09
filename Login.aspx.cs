@@ -26,16 +26,12 @@ namespace SITconnect
             if (!IsPostBack)
             {
                 Response.Cache.SetNoStore();
-            } else
-            {
-                // Session["InvalidLoginAttempt"] = null;
             }
         }
 
         protected void loginBTN_Click(object sender, EventArgs e)
         {
             
-            //Response.Write("<script>window.alert('before getDBHash.')</script>");         
             string pwd = loginpwTB.Text.ToString().Trim();
             string userid = loginemailTB.Text.ToString().Trim();
 
@@ -77,12 +73,7 @@ namespace SITconnect
                     }
                     else
                     {
-                        //errorMsg = "User ID or password is not valid. Please try again.";
-                        //errormessageLBL.Text = errorMsg;
-                        // Response.Redirect("Login.aspx", false);
-
                         // Lock Account
-
                         SqlConnection conn = new SqlConnection(MYDBConnectionString);
                         String sql = "SELECT Locked, DateTimeLocked from Account where Email='" + loginemailTB.Text + "'";
                         SqlCommand cmd = new SqlCommand();
@@ -94,60 +85,50 @@ namespace SITconnect
                         adapt.Fill(ds);
                         bool lockstatus;
                         DateTime datetimelock = DateTime.Now;
-                        if (ds.Tables[0].Rows.Count == 0)
+                        lockstatus = Convert.ToBoolean(ds.Tables[0].Rows[0]["Locked"].ToString());
+                        if (lockstatus == true)
                         {
-                            Label1.Text = "Invalid Username or Password - Relogin";
+                            datetimelock = Convert.ToDateTime(ds.Tables[0].Rows[0]["DateTimeLocked"].ToString());
+                            datetimelock = Convert.ToDateTime(datetimelock.ToString("dd/MM/yyyy HH:mm:ss"));
+                            DateTime cdatetime = Convert.ToDateTime(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
+                            TimeSpan ts = cdatetime.Subtract(datetimelock);
+                            Int32 minutelocked = Convert.ToInt32(ts.TotalMinutes);
+                            Int32 pendingminutes = 15 - minutelocked;
+                            if (pendingminutes <= 0)
+                            {
+                                unlockUser();
+                            }
+                            else
+                            {
+                                Label2.Text = "Account locked temporarily (15 Minutes) after 3 Invalid attempts. Your account will be unlocked automatically after 15 minutes.";
+                            }
                         }
                         else
                         {
-                            lockstatus = Convert.ToBoolean(ds.Tables[0].Rows[0]["Locked"].ToString());
-                            if (lockstatus == true)
+                            int attemptcount;
+                            if (Session["InvalidLoginAttempt"] != null)
                             {
-                                datetimelock = Convert.ToDateTime(ds.Tables[0].Rows[0]["DateTimeLocked"].ToString());
-                                datetimelock = Convert.ToDateTime(datetimelock.ToString("dd/MM/yyyy HH:mm:ss"));
-                                DateTime cdatetime = Convert.ToDateTime(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
-                                TimeSpan ts = cdatetime.Subtract(datetimelock);
-                                Int32 minutelocked = Convert.ToInt32(ts.TotalMinutes);
-                                Int32 pendingminutes = 15 - minutelocked;
-                                if (pendingminutes <= 0)
+                                attemptcount = Convert.ToInt16(Session["InvalidLoginAttempt"].ToString());
+                                if (attemptcount == 2)
                                 {
-                                    unlockUser();
+                                    updateLockStatus();
+                                    Label2.Text = "Account locked temporarily (15 Minutes) after 3 Invalid attempts. Your account will be unlocked automatically after 15 minutes.";
                                 }
                                 else
                                 {
-                                    Label2.Text = "Account locked temporarily (15 Minutes) after 3 Invalid attempts. Your account will be unlocked automatically after 15 minutes.";
+                                   
+                                    attemptcount += 1;
+                                    Session["InvalidLoginAttempt"] = attemptcount;
+                                    Label2.Text = "Invalid email or password. You have " + (3 - attemptcount) + " remaining to login";
                                 }
                             }
                             else
                             {
-                                int attemptcount;
-                                if (Session["InvalidLoginAttempt"] != null)
-                                {
-                                    attemptcount = Convert.ToInt16(Session["InvalidLoginAttempt"].ToString());
-                                    if (attemptcount == 3)
-                                    {
-                                        updateLockStatus();
-                                        Label2.Text = "Account locked temporarily (15 Minutes) after 3 Invalid attempts. Your account will be unlocked automatically after 15 minutes.";
-                                    } 
-                                    else
-                                    {
-                                        attemptcount += 1;
-                                    }
-                                }
-                                else
-                                {
-                                    attemptcount = 1;
-                                }
+                                attemptcount = 1;
                                 Session["InvalidLoginAttempt"] = attemptcount;
-                                if ( attemptcount == 3)
-                                {
-                                        
-                                }
-                                else
-                                {
-                                    Label2.Text = "Invalid email or password. You have " + (3 - attemptcount) + " remaining to login";
-                                }
+                                Label2.Text = "Invalid email or password. You have " + (3 - attemptcount) + " remaining to login";
                             }
+                            
                         }
 
                     }
@@ -163,18 +144,14 @@ namespace SITconnect
 
         private string getDBSalt(string userid)
         {
-
             string s = null;
-
             SqlConnection connection = new SqlConnection(MYDBConnectionString);
             string sql = "select PASSWORDSALT FROM ACCOUNT WHERE Email=@USERID";
             SqlCommand command = new SqlCommand(sql, connection);
             command.Parameters.AddWithValue("@USERID", userid);
-
             try
             {
                 connection.Open();
-
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
@@ -202,12 +179,10 @@ namespace SITconnect
         private string getDBHash(string userid)
         {
             string h = null;
-
             SqlConnection connection = new SqlConnection(MYDBConnectionString);
             string sql = "select PasswordHash FROM Account WHERE Email=@USERID";
             SqlCommand command = new SqlCommand(sql, connection);
             command.Parameters.AddWithValue("@USERID", userid);
-
             try
             {
                 connection.Open();
@@ -248,6 +223,42 @@ namespace SITconnect
                 // create a new cookie with the created guid value
                 Response.Cookies.Add(new HttpCookie("AuthToken", guid));
                 // Check for username and password
+
+                try
+                {
+                    using (SqlConnection con = new SqlConnection(MYDBConnectionString))
+                    {
+                        using (SqlCommand cmd = new SqlCommand("INSERT INTO Log VALUES(@UserId, @LogStatus, @DateTimeLogged)"))
+                        {
+                            using (SqlDataAdapter sda = new SqlDataAdapter())
+                            {
+                                cmd.CommandType = CommandType.Text;
+                                cmd.Parameters.AddWithValue("@UserId", loginemailTB.Text.Trim());
+                                cmd.Parameters.AddWithValue("@LogStatus", "Log in");
+                                cmd.Parameters.AddWithValue("@DateTimeLogged", DateTime.Now.ToString());
+                                cmd.Connection = con;
+                                try
+                                {
+                                    con.Open();
+                                    cmd.ExecuteNonQuery();
+                                }
+                                catch (Exception ex)
+                                {
+                                    throw new Exception(ex.ToString());
+                                }
+                                finally
+                                {
+                                    con.Close();
+                                }
+                            }
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.ToString());
+                }
 
                 Response.Redirect("HomePage.aspx", false);
             }

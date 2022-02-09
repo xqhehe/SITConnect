@@ -172,24 +172,21 @@
                 <td class="auto-style5">
                     <asp:Button ID="checkpwBTN" class="submitstyle" runat="server" Text="Check Password" OnClick="checkpwBTN_Click"/>
                 </td>
-                <td>
-                    &nbsp;</td>
+                <td>&nbsp;</td>
             </tr>
             <tr>
                 <td class="auto-style3">&nbsp;</td>
                 <td class="auto-style5">
                     <asp:Button ID="registerBTN" class="submitstyle" runat="server" Text="Register" OnClick="registerBTN_Click" />
                 </td>
-                <td>
-                    &nbsp;</td>
+                <td>&nbsp;</td>
             </tr>
             <tr>
                 <td class="auto-style3">&nbsp;</td>
                 <td class="auto-style5">
                     <asp:Button ID="loginPage" class="submitstyle" runat="server" Text="Go to Login Page" OnClick="loginPage_Click"/>
                 </td>
-                <td>
-                    &nbsp;</td>
+                <td>&nbsp;</td>
             </tr>
         </table>
     </form>
