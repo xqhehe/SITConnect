@@ -20,9 +20,10 @@ namespace SITconnect
         static string salt;
         byte[] Key;
         byte[] IV;
+        static String verificationcode;
         protected void Page_Load(object sender, EventArgs e)
         {
-
+           
         }
         private int checkPassword(string password)
         {
@@ -114,6 +115,12 @@ namespace SITconnect
             cipher.GenerateKey();
             Key = cipher.Key;
             IV = cipher.IV;
+
+            // EMAIL VERIFICATION
+
+            //Random random = new Random();
+            //verificationcode = random.Next(1001, 9999).ToString();
+
             createAccount();
             Response.Redirect("Login.aspx", false);
         }
@@ -124,7 +131,7 @@ namespace SITconnect
             {
                 using (SqlConnection con = new SqlConnection(MYDBConnectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("INSERT INTO Account VALUES(@FirstName, @LastName, @DOB, @Email, @CreditCard, @PasswordHash, @PasswordSalt, @DateTimeRegistered, @EmailVerified, @IV, @Key)"))
+                    using (SqlCommand cmd = new SqlCommand("INSERT INTO Account VALUES(@FirstName, @LastName, @DOB, @Email, @CreditCard, @PasswordHash, @PasswordSalt, @DateTimeRegistered, @EmailVerified, @VerificationCode, @IV, @Key, @Locked, @DateTimeLocked)"))
                 {
                         using (SqlDataAdapter sda = new SqlDataAdapter())
                         {
@@ -138,8 +145,11 @@ namespace SITconnect
                             cmd.Parameters.AddWithValue("@PasswordSalt", salt);
                             cmd.Parameters.AddWithValue("@DateTimeRegistered", DateTime.Now);
                             cmd.Parameters.AddWithValue("@EmailVerified", DBNull.Value);
+                            cmd.Parameters.AddWithValue("@VerificationCode", DBNull.Value);
                             cmd.Parameters.AddWithValue("@IV", Convert.ToBase64String(IV));
                             cmd.Parameters.AddWithValue("@Key", Convert.ToBase64String(Key));
+                            cmd.Parameters.AddWithValue("@Locked", 0);
+                            cmd.Parameters.AddWithValue("@DateTimeLocked", DBNull.Value);
                             cmd.Connection = con;
 
                             try

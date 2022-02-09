@@ -164,10 +164,7 @@
             <tr>
                 <td class="auto-style3">photo?</td>
                 <td class="auto-style5">
-                    <asp:Image ID="Image1" runat="server" Width="77px" />
-                </td>
-                <td>
-                    <- file upload thingy
+                    <asp:FileUpload ID="pfpFU" runat="server" />
                 </td>
             </tr>
             <tr>

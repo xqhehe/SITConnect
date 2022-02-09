@@ -96,6 +96,12 @@
             <div>
                 <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response"/>
             </div>
+            <td>
+                    <asp:Label ID="Label1" runat="server"></asp:Label>
+            </td>
+            <td>
+                    <asp:Label ID="Label2" runat="server"></asp:Label>
+            </td>
         </table>
     </form>
     </div>
