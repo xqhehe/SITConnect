@@ -76,7 +76,7 @@ namespace SITconnect
                             datetimelock = Convert.ToDateTime(datetimelock.ToString("dd/MM/yyyy HH:mm:ss"));
                             DateTime cdatetime = Convert.ToDateTime(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
                             TimeSpan ts = cdatetime.Subtract(datetimelock);
-                            if (ts.TotalMinutes >= 15)
+                            if (ts.TotalMinutes >= 1)
                             {
                                 unlockUser();
                                 LoginMe(sender, e);
@@ -85,10 +85,12 @@ namespace SITconnect
                     }
                     else
                     {
+
                         // Lock Account
                         SqlConnection conn = new SqlConnection(MYDBConnectionString);
-                        String sql = "SELECT Locked, DateTimeLocked from Account where Email='" + loginemailTB.Text + "'";
-                        SqlCommand cmd = new SqlCommand();
+                        String sql = "SELECT Locked, DateTimeLocked from Account where Email=@USERID";
+                        SqlCommand cmd = new SqlCommand(sql, conn);
+                        cmd.Parameters.AddWithValue("@USERID", loginemailTB.Text);
                         cmd.CommandText = sql;
                         cmd.Connection = conn;
                         SqlDataAdapter adapt = new SqlDataAdapter();
@@ -106,7 +108,7 @@ namespace SITconnect
                             TimeSpan ts = cdatetime.Subtract(datetimelock);
                             //Int32 minutelocked = Convert.ToInt32(ts.TotalMinutes);
                             //Int32 pendingminutes = 15 - minutelocked;
-                            if (ts.TotalMinutes >= 15)
+                            if (ts.TotalMinutes >= 1)
                             {
                                 unlockUser();
                             }
@@ -314,11 +316,13 @@ namespace SITconnect
         {
             SqlConnection conn = new SqlConnection(MYDBConnectionString);
             string format = "MM/dd/yyyy HH:mm:ss";
-            String updateData = "UPDATE Account set Locked=1, DateTimeLocked=' " + DateTime.Now.ToString(format) + "' where Email = '" + loginemailTB.Text + "'";
+            String updateData = "UPDATE Account set Locked=1, DateTimeLocked=' " + DateTime.Now.ToString(format) + "' where Email = @USERID";
+            SqlCommand cmd = new SqlCommand(updateData, conn);
+            cmd.Parameters.AddWithValue("@USERID", loginemailTB.Text);
+            
             try
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand();
                 cmd.CommandText = updateData;
                 cmd.Connection = conn;
                 cmd.ExecuteNonQuery();
@@ -336,13 +340,13 @@ namespace SITconnect
         void unlockUser()
         {
             SqlConnection conn = new SqlConnection(MYDBConnectionString);
-            String updateData = "Update Account set Locked=0, DateTimeLocked= NULL where Email = '" + loginemailTB.Text + "'";
-            
+            String updateUser = "Update Account set Locked=0, DateTimeLocked= NULL where Email = @USERID ";
+            SqlCommand cmd = new SqlCommand(updateUser, conn);
+            cmd.Parameters.AddWithValue("@USERID", loginemailTB.Text);
             try
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand();
-                cmd.CommandText = updateData;
+                cmd.CommandText = updateUser;
                 cmd.Connection = conn;
                 cmd.ExecuteNonQuery();
             }
