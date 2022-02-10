@@ -51,8 +51,9 @@ namespace SITconnect
                     {
                         Session["UserID"] = userid;
                         SqlConnection conn = new SqlConnection(MYDBConnectionString);
-                        String sql = "SELECT Locked, DateTimeLocked from Account where Email='" + loginemailTB.Text + "'";
+                        String sql = "SELECT Locked, DateTimeLocked from Account where Email=@USERID";
                         SqlCommand cmd = new SqlCommand();
+                        cmd.Parameters.AddWithValue("@USERID", loginemailTB.Text);
                         cmd.CommandText = sql;
                         cmd.Connection = conn;
                         SqlDataAdapter adapt = new SqlDataAdapter();
