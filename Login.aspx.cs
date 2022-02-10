@@ -70,6 +70,18 @@ namespace SITconnect
                         {
                             Label2.Text = "Account locked temporarily (15 Minutes) after 3 Invalid attempts. Your account will be unlocked automatically after 15 minutes.";
                         }
+                        if (lockstatus == true)
+                        {
+                            datetimelock = Convert.ToDateTime(ds.Tables[0].Rows[0]["DateTimeLocked"].ToString());
+                            datetimelock = Convert.ToDateTime(datetimelock.ToString("dd/MM/yyyy HH:mm:ss"));
+                            DateTime cdatetime = Convert.ToDateTime(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
+                            TimeSpan ts = cdatetime.Subtract(datetimelock);
+                            if (ts.TotalMinutes >= 1)
+                            {
+                                unlockUser();
+                                LoginMe(sender, e);
+                            }
+                        }
                     }
                     else
                     {
@@ -92,9 +104,9 @@ namespace SITconnect
                             datetimelock = Convert.ToDateTime(datetimelock.ToString("dd/MM/yyyy HH:mm:ss"));
                             DateTime cdatetime = Convert.ToDateTime(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
                             TimeSpan ts = cdatetime.Subtract(datetimelock);
-                            Int32 minutelocked = Convert.ToInt32(ts.TotalMinutes);
-                            Int32 pendingminutes = 15 - minutelocked;
-                            if (pendingminutes <= 0)
+                            //Int32 minutelocked = Convert.ToInt32(ts.TotalMinutes);
+                            //Int32 pendingminutes = 15 - minutelocked;
+                            if (ts.TotalMinutes >= 15)
                             {
                                 unlockUser();
                             }
@@ -116,7 +128,7 @@ namespace SITconnect
                                 }
                                 else
                                 {
-                                   
+
                                     attemptcount += 1;
                                     Session["InvalidLoginAttempt"] = attemptcount;
                                     Label2.Text = "Invalid email or password. You have " + (3 - attemptcount) + " remaining to login";
@@ -128,7 +140,7 @@ namespace SITconnect
                                 Session["InvalidLoginAttempt"] = attemptcount;
                                 Label2.Text = "Invalid email or password. You have " + (3 - attemptcount) + " remaining to login";
                             }
-                            
+
                         }
 
                     }
