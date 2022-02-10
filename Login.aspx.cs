@@ -76,7 +76,7 @@ namespace SITconnect
                             datetimelock = Convert.ToDateTime(datetimelock.ToString("dd/MM/yyyy HH:mm:ss"));
                             DateTime cdatetime = Convert.ToDateTime(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
                             TimeSpan ts = cdatetime.Subtract(datetimelock);
-                            if (ts.TotalMinutes >= 1)
+                            if (ts.TotalMinutes >= 15)
                             {
                                 unlockUser();
                                 LoginMe(sender, e);
