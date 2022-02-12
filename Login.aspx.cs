@@ -109,7 +109,7 @@ namespace SITconnect
                             TimeSpan ts = cdatetime.Subtract(datetimelock);
                             //Int32 minutelocked = Convert.ToInt32(ts.TotalMinutes);
                             //Int32 pendingminutes = 15 - minutelocked;
-                            if (ts.TotalMinutes >= 1)
+                            if (ts.TotalMinutes >= 15)
                             {
                                 unlockUser();
                             }
